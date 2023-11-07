@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const connectDatabase = () => {
-    console.log("Esperando conecção ao banco de dados")
+    console.log("Esperando conexão ao banco de dados")
 
     mongoose
     .connect("mongodb+srv://alex:Alphometa-7803@cluster0.oit3dmg.mongodb.net/?retryWrites=true&w=majority")
