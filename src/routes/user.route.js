@@ -5,5 +5,6 @@ const userControler = require("../controllers/user.controller");
 route.post("/", userControler.createService)
 route.get("/", userControler.findAll)
 route.get("/:id", userControler.findById)
+route.patch("/:id", userControler.update)
 
 module.exports = route
