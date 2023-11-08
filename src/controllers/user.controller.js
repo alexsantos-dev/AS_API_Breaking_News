@@ -1,7 +1,8 @@
 const userService = require("../services/user.service")
 
 const createService = async (req, res) => {
-    const { name, username, email, password, avatar, background } = req.body
+    try
+    {const { name, username, email, password, avatar, background } = req.body
 
     if (!name || !username || !email || !password || !avatar || !background) {
         res.status(400).send({ message: "Envie todos os campos para resgistro" })
@@ -23,28 +24,42 @@ const createService = async (req, res) => {
             avatar,
             background,
         },
-    });
+    })}
+    
+    catch(err){
+        res.status(500).send({message: err.message})
+    }
 };
 
 const findAll = async (req, res) => {
-    const users = await userService.findAllService()
+    try
+    {const users = await userService.findAllService()
 
     if (users.lenght === 0) {
         return res.status(400).send({ message: "Não há usuários cadastrados!" })
     }
 
-    res.send(users)
+    res.send(users)}
+    catch(err){
+        res.status(500).send({message: err.message})
+    }
 }
 
 const findById = async (req, res) => {
 
-    const user = req.user
+    try
+    {const user = req.user
 
-    res.send(user)
+    res.send(user)}
+    
+    catch(err){
+        res.status(500).send({message: err.message})
+    }
 }
 
 const update = async (req, res) => {
-    const { name, username, email, password, avatar, background } = req.body
+    try
+    {const { name, username, email, password, avatar, background } = req.body
 
     if (!name && !username && !email && !password && !avatar && !background) {
         res.status(400).send({ message: "Envie ao menos um campo para o update" })
@@ -54,7 +69,11 @@ const update = async (req, res) => {
 
     await userService.updateService(id, name, username, email, password, avatar, background)
 
-    res.send({message: "Usuário atualizado com sucesso!"})
+    res.send({message: "Usuário atualizado com sucesso!"})}
+
+    catch(err){
+        res.status(500).send({message: err.message})
+    }
 }
 
 module.exports = { createService, findAll , findById, update};
