@@ -1,5 +1,4 @@
 import userService from "../services/user.service.js"
-
 const createService = async (req, res) => {
     try
     {const { 
@@ -72,10 +71,10 @@ const update = async (req, res) => {
         res.status(400).send({ message: "Envie ao menos um campo para o update" })
     }
 
-    const {user, id} = req 
+    const {id, user} = req
 
     await userService.updateService(id, name, username, email, password, avatar, background)
-
+    
     res.send({message: "Usuário atualizado com sucesso!"})}
 
     catch(err){

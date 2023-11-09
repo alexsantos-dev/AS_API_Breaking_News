@@ -1,8 +1,8 @@
-import express from "express"
+import {Router} from "express"
 import userControler from "../controllers/user.controller.js";
 import { validID, validUser } from "../middlewares/global.middlewares.js";
 
-const router = express.Router();
+const router = Router();
 
 
 router.post("/", userControler.createService)
