@@ -1,4 +1,5 @@
 import userService from "../services/user.service.js"
+
 const createService = async (req, res) => {
     try
     {const { 
@@ -41,7 +42,7 @@ const findAll = async (req, res) => {
     try
     {const users = await userService.findAllService()
 
-    if (users.lenght === 0) {
+    if (users.length === 0) {
         return res.status(400).send({ message: "Não há usuários cadastrados!" })
     }
 
@@ -71,10 +72,10 @@ const update = async (req, res) => {
         res.status(400).send({ message: "Envie ao menos um campo para o update" })
     }
 
-    const {id, user} = req
+    const {user, id} = req 
 
     await userService.updateService(id, name, username, email, password, avatar, background)
-    
+
     res.send({message: "Usuário atualizado com sucesso!"})}
 
     catch(err){
