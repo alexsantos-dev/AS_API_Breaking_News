@@ -4,7 +4,7 @@ const create = async (req, res) => {
     try{ const {title, text, banner} = req.body
 
         if(!title || !text || !banner){
-            res.status(400).send({message: "Envie todos os campos para o resgistro"})
+            res.sendStatus(400, {message: "Envie todos os campos para o resgistro"})
         }
 
         await createService({
@@ -14,7 +14,7 @@ const create = async (req, res) => {
             user: {_id: "654e72547a0b26e140f002c0"},
         })
 
-        res.send(201)}
+        res.sendStatus(201)}
 
     catch(err){
         res.status(500).send({message: err.message})
@@ -26,7 +26,7 @@ const findAll = async (req, res) =>{
     try{ const news = await findAllService()
 
     if (news.length === 0) {
-        return res.status(400).send({ message: "Não há usuários cadastrados!" })
+        return res.sendStatus(400, { message: "Não há usuários cadastrados!" })
     }
 
     res.send(news)}
