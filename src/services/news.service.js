@@ -1,3 +1,4 @@
+import { findById } from "../controllers/news.controller.js"
 import News from "../models/News.js" 
 
 const createService = (body) => News.create(body)
@@ -8,9 +9,12 @@ const countNews = () => News.countDocuments()
 
 const topNewsService = () => News.findOne().sort({_id: -1}).populate("user")
 
+const findByIdService = (id) => News.findById(id).populate("user")
+
 export{
     createService,
     findAllService,
     countNews,
     topNewsService,
+    findByIdService
 }
