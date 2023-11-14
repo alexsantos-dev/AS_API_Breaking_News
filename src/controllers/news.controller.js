@@ -1,4 +1,4 @@
-import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService } from "../services/news.service.js"
+import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService } from "../services/news.service.js"
 
 const create = async (req, res) => {
     try {
@@ -195,7 +195,7 @@ const update = async (req, res) => {
         const news = await findByIdService(id)
 
         if(news.user._id != req.userId){
-            res.status(400).send({ message: "Atualizção não autorizada!" })
+            res.status(400).send({ message: "Ação não autorizada!" })
         }
 
         await updateService(id, title, text, banner)
@@ -206,6 +206,24 @@ const update = async (req, res) => {
     catch (err) {
         res.status(500).send({ message: err.message })
     }
+}
+
+const erase = async (req, res) => {
+    try{
+        const {id} = req.params
+        const news = await findByIdService(id)
+
+        if(news.user._id != req.userId){
+            res.status(400).send({ message: "Ação não autorizada!" })
+        }
+
+        await eraseService(id)
+        return res.send({message: "Post apagado com sucesso!"})
+    }
+    catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+
 } 
 
-export { create, findAll, topNews, findById, searchByTitle, byUser, update } 
+export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase } 
