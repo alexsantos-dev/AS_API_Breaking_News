@@ -1,4 +1,4 @@
-import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService } from "../services/news.service.js"
+import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService } from "../services/news.service.js"
 
 const create = async (req, res) => {
     try {
@@ -12,7 +12,7 @@ const create = async (req, res) => {
             title,
             text,
             banner,
-            user: { _id: req.userId},
+            user: {_id: req.userId},
         })
 
         res.sendStatus(201)
@@ -183,4 +183,29 @@ const byUser = async (req, res) => {
     }
 }
 
-export { create, findAll, topNews, findById, searchByTitle, byUser } 
+const update = async (req, res) => {
+    try{
+        const {title, text, banner} = req.body
+        const {id} = req.params
+
+        if (!title && !text && !banner) {
+            res.status(400).send({ message: "Envie todos os campos para o resgistro" })
+        }
+
+        const news = await findByIdService(id)
+
+        if(news.user._id != req.userId){
+            res.status(400).send({ message: "Atualizção não autorizada!" })
+        }
+
+        await updateService(id, title, text, banner)
+
+        return  res.status(400).send({ message: "Post atualizado com sucesso!" })
+    }
+
+    catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+} 
+
+export { create, findAll, topNews, findById, searchByTitle, byUser, update } 
