@@ -1,4 +1,4 @@
-import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService, likeNewsService, deleteLikeNewsService, addCommentService } from "../services/news.service.js"
+import { createService, findAllService, countNews, topNewsService, findByIdService, searchByTitleService, byUserService, updateService, eraseService, likeNewsService, deleteLikeNewsService, addCommentService, deleteCommentService } from "../services/news.service.js"
 
 const create = async (req, res) => {
     try {
@@ -248,14 +248,49 @@ const likeNews = async (req, res) => {
 } 
 
 const addComment = async (req, res) => {
+
+    try{
+
     const {id} = req.params
     const userId = req.userId
-    const comment = req.body
+    const {comment} = req.body
 
     if (!comment){
-        
+        return res.status(200).send({message: "comentário adicionado com sucesso!"})
+    }
+
+    await addCommentService (id, comment, userId)
+
+    res.send({message: "Comentário adicionado com sucesso!"})
+    }
+   
+    catch (err) {
+        res.status(500).send({ message: err.message })
     }
 }
 
+const deleteComment= async (req, res) => {
 
-export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase , likeNews} 
+    try{
+
+    const {idNews, idComment} = req.params
+    const userId = req.userId
+
+    const commmentDeleted = await deleteCommentService(idNews, idComment, userId)
+    console.log(commmentDeleted)
+    
+    const commentFinder = commmentDeleted.comments.find(comment => comment.idComment === idComment)   
+
+    if(commentFinder.userId !== req.userId){
+        return res.status(400).send({message: "Ação não autorizada!"})
+    }
+
+    res.send({message: "Comentário removido com sucesso!"})
+    }
+   
+    catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}  
+
+export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase , likeNews, addComment, deleteComment} 
