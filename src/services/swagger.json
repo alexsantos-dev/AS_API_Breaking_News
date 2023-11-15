@@ -1,648 +1,738 @@
 {
     "openapi": "3.0.0",
     "info": {
-      "title": "Breaking News API Documentation",
-      "description": "In this documentation you will be able to consult the API end-points and also test all available routes. Do not forget to register and carry out the authorization.",
-      "contact": {
-        "email": "alexsantos.web.developer@gmail.com"
-      },
-      "version": "1.0.0"
+        "title": "Documentação da API Breaking News",
+        "description": "Nesta documentação, você poderá consultar os pontos finais da API e também testar todas as rotas disponíveis. Não se esqueça de se registrar e realizar a autorização.",
+        "contact": {
+            "email": "alexsantos.web.developer@gmail.com"
+        },
+        "version": "1.0.0"
     },
     "servers": [
-      {
-        "url": "https://api-breakingnews.onrender.com",
-        "description": "Render"
-      },
-  
-      {
-        "url": "http://localhost:3000",
-        "description": "Local"
-      },
-      {
-        "url": "https://breakingnews.herokuapp.com",
-        "description": "Heroku"
-      }
+        {
+            "url": "https://api-breakingnews.onrender.com",
+            "description": "Render"
+        },
+        {
+            "url": "http://localhost:3000",
+            "description": "Local"
+        },
+        {
+            "url": "https://breakingnews.herokuapp.com",
+            "description": "Heroku"
+        }
     ],
     "paths": {
-      "/user/create": {
-        "post": {
-          "summary": "Create a new user",
-          "description": "Route responsible for creating a new user",
-          "tags": ["Users"],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
+        "/user/": {
+            "post": {
+                "summary": "Criar um novo usuário",
+                "description": "Rota responsável por criar um novo usuário",
+                "tags": [
+                    "Usuários"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "Usuários": {
+                                    "value": {
+                                        "name": "Cacau Lima",
+                                        "username": "cacode",
+                                        "email": "clima@gmail.com",
+                                        "password": "12345",
+                                        "avatar": "https://i.imgur.com/Ry1cb5M.png",
+                                        "background": "https://images.wallpapersden.com/image/download/triangle-8k-blue-pattern_bGZlbmiUmZqaraWkpJRmbmdlrWZlbWU.jpg"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 },
-                "examples": {
-                  "Users": {
-                    "value": {
-                      "name": "Cacau Lima",
-                      "username": "cacode",
-                      "email": "clima@gmail.com",
-                      "password": "12345",
-                      "avatar": "https://i.imgur.com/Ry1cb5M.png",
-                      "background": "https://images.wallpapersden.com/image/download/triangle-8k-blue-pattern_bGZlbmiUmZqaraWkpJRmbmdlrWZlbWU.jpg"
+                "responses": {
+                    "400": {
+                        "description": "Não encontrado!"
+                    },
+                    "201": {
+                        "description": "Criado com sucesso!",
+                        "content": {
+                            "application/json": {
+                                "schemma": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
                     }
-                  }
                 }
-              }
             }
-          },
-          "responses": {
-            "400": {
-              "description": "Not Found"
-            },
-            "201": {
-              "description": "Created",
-              "content": {
-                "application/json": {
-                  "schemma": {
-                    "type": "object",
-                    "$ref": "#/components/schemas/User"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/user": {
-        "get": {
-          "summary": "Search all users",
-          "description": "Route responsible for fetching all users",
-          "tags": ["Users"],
-          "security": [{ "bearerAuth": [] }],
-          "responses": {
-            "401": {
-              "description": "Unauthorized"
-            },
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/User"
+        },
+        "/user": {
+            "get": {
+                "summary": "Procurar todos os usuários",
+                "description": "Rota responsável pela busca de todos os usuários",
+                "tags": [
+                    "Usuários"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                  }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Não autorizado"
+                    },
+                    "400": {
+                        "description": "Não encontrado!"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
-        }
-      },
-      "/user/findById/{id}": {
-        "get": {
-          "summary": "Search user by id",
-          "description": "Route responsible for searching for user by id",
-          "tags": ["Users"],
-          "security": [{ "bearerAuth": [] }],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "type": "string",
-              "description": "User ID",
-              "required": true
-            }
-          ],
-          "responses": {
-            "401": {
-              "description": "Unauthorized"
-            },
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "$ref": "#/components/schemas/User"
-                  }
+        },
+        "/user/{id}/": {
+            "get": {
+                "summary": "Procurar usuário pelo ID",
+                "description": "Rota responsável pela busca do usuário pelo seu ID",
+                "tags": [
+                    "Usuários"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string",
+                        "description": "ID do usuário",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Não autorizado"
+                    },
+                    "400": {
+                        "description": "Não encontrado!"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
-        }
-      },
-      "/user/update/{id}": {
-        "patch": {
-          "summary": "Update user by id",
-          "description": "Route responsible for editing the user by id",
-          "tags": ["Users"],
-          "security": [{ "bearerAuth": [] }],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "type": "string",
-              "description": "User ID",
-              "required": true
+        },
+        "/user/{id}": {
+            "patch": {
+                "summary": "Atualizar usuário pelo ID",
+                "description": "Rota responsável por editar o usuário pelo ID",
+                "tags": [
+                    "Usuários"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string",
+                        "description": "ID do usuário",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "Usuários": {
+                                    "value": {
+                                        "name": "Thiago Lima"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "401": {
+                            "description": "Não autorizado"
+                        },
+                        "400": {
+                            "description": "Não encontrado"
+                        },
+                        "200": {
+                            "description": "OK",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
+        },
+        "/auth": {
+            "post": {
+                "summary": "Login no Breaking News",
+                "description": "Rota responsável por fazer login de um usuário registrado",
+                "tags": [
+                    "Autenticação"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "Usuário": {
+                                    "value": {
+                                        "email": "docencia.thiago@gmail.com",
+                                        "password": "12345"
+                                    }
+                                }
+                            }
+                        }
+                    }
                 },
-                "examples": {
-                  "Users": {
-                    "value": {
-                      "name": "Thiago Lima"
+                "responses": {
+                    "400": {
+                        "description": "Não encontrado"
+                    },
+                    "200": {
+                        "description": "OK"
                     }
-                  }
                 }
-              }
             }
-          },
-          "responses": {
-            "401": {
-              "description": "Unauthorized"
-            },
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "$ref": "#/components/schemas/User"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/auth/login": {
-        "post": {
-          "summary": "Login to Breaking News",
-          "description": "Route responsible for logging in a registered user",
-          "tags": ["Auth"],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                },
-                "examples": {
-                  "User": {
-                    "value": {
-                      "email": "docencia.thiago@gmail.com",
-                      "password": "12345"
+        },
+        "/news/": {
+            "post": {
+                "summary": "Criar uma nova News",
+                "description": "Rota responsável por criar uma nova News",
+                "tags": [
+                    "News"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK"
-            }
-          }
-        }
-      },
-      "/posts/create": {
-        "post": {
-          "summary": "Create a new post",
-          "description": "Route responsible for creating a new Post",
-          "tags": ["Post"],
-          "security": [{ "bearerAuth": [] }],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Post"
-                },
-                "examples": {
-                  "Post": {
-                    "value": {
-                      "user": "",
-                      "banner": "https://labs.tadigital.com/wp-content/uploads/2017/07/ES6-banner.jpg",
-                      "title": "ECMAScript 6",
-                      "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-                      "likes": [],
-                      "comments": []
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/News"
+                            },
+                            "examples": {
+                                "News": {
+                                    "value": {
+                                        "user": "",
+                                        "banner": "https://labs.tadigital.com/wp-content/uploads/2017/07/ES6-banner.jpg",
+                                        "title": "ECMAScript 6",
+                                        "text": "Lorem Ipsum é simplesmente um texto fictício da indústria de impressão e composição tipográfica. O Lorem Ipsum tem sido o texto padrão da indústria desde os anos 1500, quando um impressor desconhecido pegou uma bandeja de tipos e a embaralhou para fazer um livro de amostra. Ele sobreviveu não apenas cinco séculos, mas também ao salto para a composição eletrônica, permanecendo essencialmente inalterado. Ele foi popularizado nos anos 1960 com o lançamento de folhas Letraset contendo passagens de Lorem Ipsum e, mais recentemente, com software de editoração eletrônica como Aldus PageMaker, incluindo versões de Lorem Ipsum.",
+                                        "likes": [],
+                                        "comments": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "401": {
+                            "description": "Não autorizado"
+                        },
+                        "400": {
+                            "description": "Não encontrado"
+                        },
+                        "201": {
+                            "description": "Criado",
+                            "content": {
+                                "application/json": {
+                                    "schemma": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Post"
+                                    }
+                                }
+                            }
+                        }
                     }
-                  }
                 }
-              }
             }
-          },
-          "responses": {
-            "401": {
-              "description": "Unauthorized"
-            },
-            "400": {
-              "description": "Not Found"
-            },
-            "201": {
-              "description": "Created",
-              "content": {
-                "application/json": {
-                  "schemma": {
-                    "type": "object",
-                    "$ref": "#/components/schemas/Post"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/posts": {
-        "get": {
-          "summary": "Search all posts",
-          "description": "Route responsible for fetching all posts",
-          "tags": ["Post"],
-          "parameters": [
-            {
-              "in": "query",
-              "name": "limit",
-              "type": "string"
-            },
-            {
-              "in": "query",
-              "name": "offset",
-              "type": "string"
-            }
-          ],
-          "responses": {
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Post"
+        },
+        "/news": {
+            "get": {
+                "summary": "Buscar todas as postagens",
+                "description": "Rota responsável por buscar todas as postagens",
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "limite",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "type": "string"
                     }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/posts/top": {
-        "get": {
-          "summary": "Search top post",
-          "description": "Route responsible for fetching top post",
-          "tags": ["Post"],
-          "responses": {
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schemma": {
-                    "type": "object",
-                    "$ref": "#/components/schemas/Post"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/posts/search": {
-        "get": {
-          "summary": "Search posts by title",
-          "description": "Route responsible for fetching the posts that match the title sent via query params",
-          "tags": ["Post"],
-          "parameters": [
-            {
-              "in": "query",
-              "name": "title",
-              "type": "string",
-              "required": true
-            }
-          ],
-          "responses": {
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Post"
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Não encontrado"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/News"
+                                    }
+                                }
+                            }
+                        }
                     }
-                  }
                 }
-              }
             }
-          }
-        }
-      },
-      "/posts/byIdPost/{id}": {
-        "patch": {
-          "summary": "Search post by id",
-          "description": "Route responsible for fetching post by id",
-          "tags": ["Post"],
-          "security": [{ "bearerAuth": [] }],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "type": "string",
-              "description": "Post ID",
-              "required": true
-            }
-          ],
-          "responses": {
-            "401": {
-              "description": "Unauthorized"
-            },
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schemma": {
-                    "type": "object",
-                    "$ref": "#/components/schemas/Post"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/posts/byUserId": {
-        "get": {
-          "summary": "Search posts by use id",
-          "description": "Route responsible for fetching posts by use id",
-          "tags": ["Post"],
-          "responses": {
-            "400": {
-              "description": "Not Found"
-            },
-            "401": {
-              "description": "Unauthorized"
-            },
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Post"
+        },
+        "/news/top": {
+            "get": {
+                "summary": "Buscar News mais popular",
+                "description": "Rota responsável por buscar a News mais popular",
+                "tags": [
+                    "News"
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Não encontrado"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schemma": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/News"
+                                }
+                            }
+                        }
                     }
-                  }
                 }
-              }
             }
-          }
-        }
-      },
-      "/posts/upadate/{id}": {
-        "patch": {
-          "summary": "Update a post",
-          "description": "Route responsible for updating a Post",
-          "tags": ["Post"],
-          "security": [{ "bearerAuth": [] }],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "type": "string",
-              "description": "Post ID",
-              "required": true
-            }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Post"
-                },
-                "examples": {
-                  "Post": {
-                    "value": {
-                      "banner": "",
-                      "title": "",
-                      "text": ""
+        },
+        "/news/search": {
+            "get": {
+                "summary": "Buscar postagens por título",
+                "description": "Rota responsável por buscar as postagens que correspondem ao título enviado pelos parâmetros de consulta",
+                "tags": [
+                    "News"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "title",
+                        "type": "string",
+                        "required": true
                     }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "401": {
-              "description": "Unauthorized"
-            },
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK",
-              "content": {
-                "application/json": {
-                  "schemma": {
-                    "type": "object",
-                    "$ref": "#/components/schemas/Post"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/posts/delete/{id}": {
-        "delete": {
-          "summary": "Delete a post",
-          "description": "Route responsible for deleting a Post",
-          "tags": ["Post"],
-          "security": [{ "bearerAuth": [] }],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "type": "string",
-              "description": "Post ID",
-              "required": true
-            }
-          ],
-          "responses": {
-            "401": {
-              "description": "Unauthorized"
-            },
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK"
-            }
-          }
-        }
-      },
-      "/posts/{id}/like": {
-        "patch": {
-          "summary": "Like a post",
-          "description": "Route responsible for liking a post",
-          "tags": ["Post"],
-          "security": [{ "bearerAuth": [] }],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "type": "string",
-              "description": "User ID",
-              "required": true
-            }
-          ],
-          "responses": {
-            "401": {
-              "description": "Unauthorized"
-            },
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK"
-            }
-          }
-        }
-      },
-      "/posts/{id}/comment": {
-        "patch": {
-          "summary": "Comment on a post",
-          "description": "Route responsible for commenting on a post",
-          "tags": ["Post"],
-          "security": [{ "bearerAuth": [] }],
-          "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "type": "string",
-              "description": "User ID",
-              "required": true
-            }
-          ],
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Comment"
-                },
-                "examples": {
-                  "Comment": {
-                    "value": {
-                      "message": "Comentário legal"
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Não encontrado"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/News"
+                                    }
+                                }
+                            }
+                        }
                     }
-                  }
                 }
-              }
             }
-          },
-          "responses": {
-            "401": {
-              "description": "Unauthorized"
-            },
-            "400": {
-              "description": "Not Found"
-            },
-            "200": {
-              "description": "OK"
+        },
+        "/news/byUser": {
+            "get": {
+                "summary": "Buscar News por ID",
+                "description": "Rota responsável por buscar News por ID",
+                "tags": [
+                    "News"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string",
+                        "description": "ID da News",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Não autorizado"
+                    },
+                    "400": {
+                        "description": "Não encontrado"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schemma": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/News"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
+        },
+        "/news/{id}/": {
+            "get": {
+                "summary": "Buscar postagens por ID de usuário",
+                "description": "Rota responsável por buscar postagens por ID de usuário",
+                "tags": [
+                    "News"
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Não encontrado"
+                    },
+                    "401": {
+                        "description": "Não autorizado"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/News"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/news/{id}": {
+            "patch": {
+                "summary": "Atualizar uma News",
+                "description": "Rota responsável por atualizar uma News",
+                "tags": [
+                    "News"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string",
+                        "description": "ID da News",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/News"
+                            },
+                            "examples": {
+                                "News": {
+                                    "value": {
+                                        "banner": "",
+                                        "title": "",
+                                        "text": ""
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "401": {
+                            "description": "Não autorizado"
+                        },
+                        "400": {
+                            "description": "Não encontrado"
+                        },
+                        "200": {
+                            "description": "OK",
+                            "content": {
+                                "application/json": {
+                                    "schemma": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Post"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/news/{id}/": {
+            "delete": {
+                "summary": "Excluir uma News",
+                "description": "Rota responsável por excluir uma News",
+                "tags": [
+                    "News"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string",
+                        "description": "ID da News",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Não autorizado"
+                    },
+                    "400": {
+                        "description": "Não encontrado"
+                    },
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "news/like/{:id}/":{
+            "patch": {
+                "summary": "Adicionar ou remover likes",
+                "description": "Rota responsável por adicionar ou remover likes nas notícias",
+                "tags": [
+                    "News"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "string",
+                        "description": "ID da News",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Não autorizado"
+                    },
+                    "200": {
+                        "description": "Like adcionado com sucesso!"
+                    },
+                    "201": {
+                        "description": "Like removido com sucesso!"
+                    }
+                }
+            }
+        },
+        "news/comment/{:id}/":{
+            "patch": {
+                "summary": "Adicionar comentário",
+                "description": "Rota responsável por adicionar comentários nas notícias",
+                "tags": [
+                    "News"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "idNews",
+                        "type": "string",
+                        "description": "ID da News",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Não autorizado"
+                    },
+                    "200": {
+                        "description": "Like adcionado com sucesso!"
+                    },
+                    "201": {
+                        "description": "Like removido com sucesso!"
+                    }
+                }
+            }
+        },
+        "news/comment/{:idNews}/{:idComment}":{
+            "patch": {
+                "summary": "Remover comentário",
+                "description": "Rota responsável por remover comentários nas notícias",
+                "tags": [
+                    "News"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "idNews",
+                        "type": "string",
+                        "description": "ID da News",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "idComment",
+                        "type": "string",
+                        "description": "ID do Comentário ",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Não autorizado"
+                    },
+                    "200": {
+                        "description": "Like adcionado com sucesso!"
+                    },
+                    "201": {
+                        "description": "Like removido com sucesso!"
+                    }
+                }
+            }
         }
-      }
     },
     "components": {
-      "securitySchemes": {
-        "bearerAuth": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
-        }
-      },
-      "schemas": {
-        "User": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "username": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "password": {
-              "type": "string"
-            },
-            "avatar": {
-              "type": "string"
-            },
-            "background": {
-              "type": "string"
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
             }
-          }
         },
-        "Post": {
-          "type": "object",
-          "properties": {
-            "user": {
-              "type": "string"
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "avatar": {
+                        "type": "string"
+                    },
+                    "background": {
+                        "type": "string"
+                    }
+                }
             },
-            "banner": {
-              "type": "string"
+            "News": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "type": "string"
+                    },
+                    "banner": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "likes": {
+                        "type": "number"
+                    },
+                    "comments": {
+                        "type": "array"
+                    },
+                    "createdAt": {
+                        "type": "date"
+                    }
+                }
             },
-            "title": {
-              "type": "string"
-            },
-            "text": {
-              "type": "string"
-            },
-            "likes": {
-              "type": "number"
-            },
-            "comments": {
-              "type": "array"
-            },
-            "createdAt": {
-              "type": "date"
+            "Comment": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
             }
-          }
-        },
-        "Comment": {
-          "type": "object",
-          "properties": {
-            "message": {
-              "type": "string"
-            }
-          }
         }
-      }
     }
-  }
+}

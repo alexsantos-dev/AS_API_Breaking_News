@@ -1,8 +1,8 @@
-import {Router} from "express"
+import {Router, json} from "express"
 const router = Router()
 
 import swaggerUi from "swagger-ui-express"
-import swaggerDocument from "../services/swagger.json"
+import swaggerDocument from "../services/swagger.json" assert {type: "json"}
 
 router.use("/", swaggerUi.serve)
 router.get("/", swaggerUi.setup(swaggerDocument))
