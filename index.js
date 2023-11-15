@@ -1,10 +1,10 @@
 import express from "express"
-import connectDatabase from "./src/database/db.js"
-import userRoute from "./src/routes/user.route.js"
-import authRoute from "./src/routes/auth.route.js"
-import newsRoute from "./src/routes/news.route.js"
+import connectDatabase from "./database/db.js"
+import userRoute from "./routes/user.route.js"
+import authRoute from "./routes/auth.route.js"
+import newsRoute from "./routes/news.route.js"
 import dotenv from "dotenv"
-import swaggerRoute from "./src/routes/swagger.route.cjs"
+import swaggerRoute from "./routes/swagger.route.cjs"
 
 dotenv.config()
 
