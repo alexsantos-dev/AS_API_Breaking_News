@@ -20,7 +20,7 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 // Configurar o middleware CORS para permitir apenas origens específicas
 const corsOptions = {
     origin: 'http://localhost:5173', // Substitua pelo seu domínio permitido
-    methods: 'GET,PATCH,POST,DELETE',
+    methods: 'GET,HEAD,PATCH,PUT,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 204,
 };
