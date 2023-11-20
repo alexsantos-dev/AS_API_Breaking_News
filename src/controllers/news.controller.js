@@ -12,7 +12,7 @@ const create = async (req, res) => {
             title,
             text,
             banner,
-            user: {_id: req.userId},
+            user: { _id: req.userId },
         })
 
         res.sendStatus(201)
@@ -36,7 +36,7 @@ const findAll = async (req, res) => {
         }
 
         if (!offset) {
-            offset = 0
+            offset = 1
         }
         const news = await findAllService(offset, limit)
         const total = await countNews()
@@ -79,23 +79,7 @@ const findAll = async (req, res) => {
 const topNews = async (req, res) => {
     try {
         const news = await topNewsService()
-
-        if (!news) {
-            return res.send(400).send({ message: "Não há usuários cadastrados!" })
-        }
-        res.send({
-            news: {
-                id: news._id,
-                title: news.title,
-                text: news.text,
-                banner: news.banner,
-                likes: news.likes,
-                comments: news.comments,
-                name: news.user.name,
-                username: news.user.username,
-                avatar: news.user.avatar,
-            },
-        })
+        return res.send(news)
     }
 
     catch (err) {
@@ -160,7 +144,7 @@ const searchByTitle = async (req, res) => {
 }
 
 const byUser = async (req, res) => {
-    try{
+    try {
         const id = req.userId
         const news = await byUserService(id)
 
@@ -184,9 +168,9 @@ const byUser = async (req, res) => {
 }
 
 const update = async (req, res) => {
-    try{
-        const {title, text, banner} = req.body
-        const {id} = req.params
+    try {
+        const { title, text, banner } = req.body
+        const { id } = req.params
 
         if (!title && !text && !banner) {
             res.status(400).send({ message: "Envie todos os campos para o resgistro" })
@@ -194,13 +178,13 @@ const update = async (req, res) => {
 
         const news = await findByIdService(id)
 
-        if(news.user._id != req.userId){
+        if (news.user._id != req.userId) {
             res.status(400).send({ message: "Ação não autorizada!" })
         }
 
         await updateService(id, title, text, banner)
 
-        return  res.status(400).send({ message: "Post atualizado com sucesso!" })
+        return res.status(400).send({ message: "Post atualizado com sucesso!" })
     }
 
     catch (err) {
@@ -209,88 +193,88 @@ const update = async (req, res) => {
 }
 
 const erase = async (req, res) => {
-    try{
-        const {id} = req.params
+    try {
+        const { id } = req.params
         const news = await findByIdService(id)
 
-        if(news.user._id != req.userId){
+        if (news.user._id != req.userId) {
             res.status(400).send({ message: "Ação não autorizada!" })
         }
 
         await eraseService(id)
-        return res.send({message: "Post apagado com sucesso!"})
+        return res.send({ message: "Post apagado com sucesso!" })
     }
     catch (err) {
         res.status(500).send({ message: err.message })
     }
 
-} 
+}
 
 const likeNews = async (req, res) => {
-    try{
-    const {id} = req.params
-    const userId = req.userId
+    try {
+        const { id } = req.params
+        const userId = req.userId
 
-    const newsLiked = await likeNewsService(id, userId)
-    console.log(newsLiked)
+        const newsLiked = await likeNewsService(id, userId)
+        console.log(newsLiked)
 
-    if(!newsLiked){
-        await deleteLikeNewsService(id, userId)
-        return res.status(200).send({message: "Like removido com sucesso!"})
+        if (!newsLiked) {
+            await deleteLikeNewsService(id, userId)
+            return res.status(200).send({ message: "Like removido com sucesso!" })
+        }
+
+        res.send({ message: "Like adicionado com sucesso!" })
     }
 
-    res.send({message: "Like adicionado com sucesso!"})
-    }
-
-    catch (err) {
-        res.status(500).send({ message: err.message })
-    }
-} 
-
-const addComment = async (req, res) => {
-
-    try{
-
-    const {id} = req.params
-    const userId = req.userId
-    const {comment} = req.body
-
-    if (!comment){
-        return res.status(200).send({message: "comentário adicionado com sucesso!"})
-    }
-
-    await addCommentService (id, comment, userId)
-
-    res.send({message: "Comentário adicionado com sucesso!"})
-    }
-   
     catch (err) {
         res.status(500).send({ message: err.message })
     }
 }
 
-const deleteComment= async (req, res) => {
+const addComment = async (req, res) => {
 
-    try{
+    try {
 
-    const {idNews, idComment} = req.params
-    const userId = req.userId
+        const { id } = req.params
+        const userId = req.userId
+        const { comment } = req.body
 
-    const commmentDeleted = await deleteCommentService(idNews, idComment, userId)
-    console.log(commmentDeleted)
-    
-    const commentFinder = commmentDeleted.comments.find(comment => comment.idComment === idComment)   
+        if (!comment) {
+            return res.status(200).send({ message: "comentário adicionado com sucesso!" })
+        }
 
-    if(commentFinder.userId !== req.userId){
-        return res.status(400).send({message: "Ação não autorizada!"})
+        await addCommentService(id, comment, userId)
+
+        res.send({ message: "Comentário adicionado com sucesso!" })
     }
 
-    res.send({message: "Comentário removido com sucesso!"})
-    }
-   
     catch (err) {
         res.status(500).send({ message: err.message })
     }
-}  
+}
 
-export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase , likeNews, addComment, deleteComment} 
+const deleteComment = async (req, res) => {
+
+    try {
+
+        const { idNews, idComment } = req.params
+        const userId = req.userId
+
+        const commmentDeleted = await deleteCommentService(idNews, idComment, userId)
+        console.log(commmentDeleted)
+
+        const commentFinder = commmentDeleted.comments.find(comment => comment.idComment === idComment)
+
+        if (commentFinder.userId !== req.userId) {
+            return res.status(400).send({ message: "Ação não autorizada!" })
+        }
+
+        res.send({ message: "Comentário removido com sucesso!" })
+    }
+
+    catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}
+
+export { create, findAll, topNews, findById, searchByTitle, byUser, update, erase, likeNews, addComment, deleteComment } 

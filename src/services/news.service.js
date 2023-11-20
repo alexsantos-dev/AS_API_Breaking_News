@@ -6,7 +6,7 @@ const findAllService = (offset, limit) => News.find().sort({ _id: -1 }).skip(off
 
 const countNews = () => News.countDocuments()
 
-const topNewsService = () => News.findOne().sort({ _id: -1 }).populate("user")
+const topNewsService = () => News.find().sort({ _id: -1 }).populate("user")
 
 const findByIdService = (id) => News.findById(id).populate("user")
 
@@ -58,7 +58,7 @@ const addCommentService = (idNews, comment, userId) => {
     )
 }
 
-const deleteCommentService = (idNews, idComment, userId) => 
+const deleteCommentService = (idNews, idComment, userId) =>
     News.findOneAndUpdate(
         { _id: idNews },
         {
