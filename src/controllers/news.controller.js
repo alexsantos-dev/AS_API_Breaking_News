@@ -36,7 +36,7 @@ const findAll = async (req, res) => {
         }
 
         if (!offset) {
-            offset = 1
+            offset = 0
         }
         const news = await findAllService(offset, limit)
         const total = await countNews()
