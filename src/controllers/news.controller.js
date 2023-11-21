@@ -36,7 +36,7 @@ const findAll = async (req, res) => {
         }
 
         if (!offset) {
-            offset = 0
+            offset = 1
         }
         const news = await findAllService(offset, limit)
         const total = await countNews()
@@ -79,7 +79,24 @@ const findAll = async (req, res) => {
 const topNews = async (req, res) => {
     try {
         const news = await topNewsService()
-        return res.send(news)
+
+        if (!news) {
+            return res.status(200).send({ message: "Não há notícias cadastradas!" })
+        }
+
+        res.send({
+            news: {
+                id: news._id,
+                title: news.title,
+                text: news.text,
+                banner: news.banner,
+                likes: news.likes,
+                comments: news.comments,
+                name: news.user.name,
+                username: news.user.username,
+                avatar: news.user.avatar,
+            },
+        })
     }
 
     catch (err) {
