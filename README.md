@@ -1,4 +1,4 @@
-# Projeto Breaking News
+# Projeto Breaking News(API)
 
 Website de notícias construído com a stack MERN (MongoDB, Express.js, React e Node.js)
 
