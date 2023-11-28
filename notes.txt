@@ -1,1 +1,13 @@
-- transição para o sistema linux mint
+Requisitos do cliente:
+
+1 - Login
+
+2 - Notícias: Ler, postar, editar, deletar, like, comentário.
+
+3 - Listagem de mais recentes
+
+4 - Pesquisas: Por usúario e por notícia
+
+Anotações:
+
+- transição para o sistema linux mint ()
