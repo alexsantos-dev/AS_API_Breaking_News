@@ -9,7 +9,7 @@ import swaggerRoute from "./src/routes/swagger.route.cjs"
 dotenv.config()
 
 const app = express();
-const porta = process.env.PORT || 3000 
+const porta = process.env.PORT || 3000
 
 connectDatabase()
 app.use(express.json())
@@ -17,5 +17,23 @@ app.use("/user", userRoute)
 app.use("/auth", authRoute)
 app.use("/news", newsRoute)
 app.use("/doc", swaggerRoute)
+
+async function front() {
+    const accessUrl = async () => {
+        try {
+            await axios.get("https://alexsantos-fullstack.vercel.app/");
+        } catch (error) {
+            console.error(error.message);
+            setInterval(accessUrl, 5000);
+        }
+    };
+
+    setInterval(accessUrl, 900000);
+
+
+    await new Promise(() => { });
+}
+
+front();
 
 app.listen(porta, () => console.log(`Servidor rodando na porta: ${porta}`))
