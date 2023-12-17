@@ -5,7 +5,7 @@ import authRoute from "./src/routes/auth.route.js"
 import newsRoute from "./src/routes/news.route.js"
 import dotenv from "dotenv"
 import swaggerRoute from "./src/routes/swagger.route.cjs"
-
+import axios from "axios"
 dotenv.config()
 
 const app = express();
